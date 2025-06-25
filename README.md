@@ -128,7 +128,7 @@ libql search book booked [name|*]
 Use '%' for wildcards, e.g. 'Ku%', '%ku'
 
 
-### Developer Mode – `libql->inject`
+### Developer Mode – 'libql->inject'
 
 Used only in dev/admin shell after authentication:
 
