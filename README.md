@@ -92,7 +92,7 @@ Restart:
 liber libhelp
 
 
-### `libql` Commands (Book & Student DB)
+### 'libql' Commands (Book & Student DB)
 
 #### Reveal Data
 
