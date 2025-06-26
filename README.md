@@ -145,4 +145,5 @@ Used only in dev/admin shell after authentication:
 ### Notes
 
   **Elevate authority using 'core' before restricted actions**
+  
  (*liber and libql needs core elevation permit; Only once per session*)
