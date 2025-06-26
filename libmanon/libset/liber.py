@@ -13,12 +13,12 @@ def liber(arg, data):
         print('\nLiber: Extra Aguement! ૮₍ ˶>⤙<˶  ₎ა\n', flush=True)
         print('Liber sees you re confused, try: "liber libhelp"! (ง•̀ᗝ•́)ง')
     else:
-        if arg[1]=='libhelp':
+        if arg[1]=='libhelp': #Calls for help, duh!
             if len(arg)>2:
                 print(f'\'{arg[1]}\' doesn\'t need extra arguement: "{' '.join(arg[2:])}"', flush=True)
             print()
             print('LibHelp:\n\tdebug [value:bool]:\tTurns on debug mode\n\tcheck [any]:\tChecks validation\n\tlibql->inject:\tliber bypasses pre-built-in libql processes\n\t', flush=True)
-        elif arg[1]=='debug':
+        elif arg[1]=='debug': #Displays logs before logging them, helps in case you can't pinpoint error cause
             from .librr import debug
             if len(arg)==2:
                 debug('True')
@@ -40,7 +40,7 @@ def liber(arg, data):
                     password=''
                 if kp==password:
                     print('Entering libql-inj-mode', flush=True)
-                    libql_inj(data)
+                    libql_inj(data) #Multiple confimration as this allows direct access of sql database (Only use when absolutely necessary)
                 else:
                     print('Authentication_Validation2: Mismatch', flush=True)
             else:
@@ -49,6 +49,7 @@ def liber(arg, data):
             print('\n\tUnknown ¯\\_(ツ)_/¯\n', flush=True)
 
 def libql_inj(data):
+    #This shell uses it's own format than liber, although simpler but not much user friendly
     import datetime
     #A netted function
     def liblog(words:any, type:str='Error'):
@@ -180,6 +181,7 @@ def libql_inj(data):
         else:
             print('Response: 0;===False:: "Unable to process given instructions"')
 
+#Sug helps finding words and in typos
 def sug(entry:str, words:list):
     entry1=entry
     wwr=words
@@ -197,6 +199,7 @@ def sug(entry:str, words:list):
             entry+='"?'
         else:
             entry+='",'
+        #The block below could have been used as function but it slowly evolved too complex, so do not touch it
         if s[0][1:-1] not in wwr:
             entry+=' it'
             if s[0][1:-1] in ['--help', '-help', 'help', 'helpme', 'help-me', 'conf_sec_rev', 'test', 'new-db-->on']:
@@ -244,17 +247,18 @@ def sug(entry:str, words:list):
     else:
         print(f'\nErLib: Unknown argument "{entry1}" was received in liber ¯\\_(ツ)_/¯\n', flush=True)
 
-#This function will br for suggestions
+#This function will be for suggestions (Second Note: sug function will inherit it's data and process it accordingly)
 def suggest(entry:str, words:list):
     ls=[]
     for i in words:
         ls+=[0]
-    #Give points for words
+    #To not cause error IndexOutOfRange, we will assign smalled value to c variable
     for i in range(len(words)):
         if len(entry)>=len(str(words[i])):
             c=len(str(words[i]))
         else:
             c=len(entry)
+        #Give points for words based on simple algorithm below
         for j in range(c):
             if entry[j]==str(words[i])[j]:
                 ls[i]+=2
@@ -630,9 +634,9 @@ def libql(arg, data):
         if len(arg)==1:
             print('\nLibQL: Extra Aguement! ૮₍ ˶>⤙<˶  ₎ა\n', flush=True)
             print()
-            print('Libql:\n\treveal [data:any]:\tDisplays table data\n\tissue <[date]> [student id] [book name]\n\talignment [flag]:\tMistmatch check and correction of data\n\tadd [flag] <data>:\tappends data\n\t-tr [flag] [data key]:\tRemoves targetted data\n\tsearch [flag] [condition]:\tsearches for data tht matches the condition')
+            print('Libql SelfHelp:\n\treveal [data:any]:\tDisplays table data\n\tissue <[date]> [student id] [book name]\n\talignment [flag]:\tMistmatch check and correction of data\n\tadd [flag] <data>:\tappends data\n\t-tr [flag] [data key]:\tRemoves targetted data\n\tsearch [flag] [condition]:\tsearches for data tht matches the condition')
         else:
-            if arg[1]=='reveal':
+            if arg[1]=='reveal': #Reveals data(in a clean format) and allows multiple input
                 if len(arg)==2:
                     print('\n"reveal"?\tReveal what? (＾_-)\n', flush=True)
                 elif arg[2]=='data':
@@ -679,6 +683,7 @@ def libql(arg, data):
                         for scan in scmd:
                             try:
                                 for sn in scan:
+                                    #Below is filtering block to prevent sql-injection as %s is not being used (it failed to allow table call)
                                     if sn.lower()>='a' and sn.lower()<='z':
                                         pass
                                     elif sn.isdigit():
@@ -693,6 +698,7 @@ def libql(arg, data):
                                     d=cur.fetchall()
                                     for i in d:
                                         for j in i:
+                                            j=str(j)
                                             if len(str(j))>c:
                                                 c=len(str(j))
                             except:
@@ -781,7 +787,7 @@ def libql(arg, data):
                                 for j in i:
                                     j=str(j)
                                     dkk.append(j)
-                            dk=dict(zip(nbkk, dkk)) #Something I learnt new about is that zip returns tuple in order iteration
+                            dk=dict(zip(nbkk, dkk)) #Something I learnt new in this project is that zip returns tuple in order iteration
                             for i in dk.keys():
                                 c=bkk.count(i)
                                 if str(c)!=dk[i]:
