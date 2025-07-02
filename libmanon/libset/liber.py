@@ -27,7 +27,7 @@ def liber(arg, data):
             else:
                 print(f'\n\'{arg[1]}\' does not needs an arguement! (づ ᴗ _ᴗ)づ\n', flush=True)
         elif arg[1]=='env':
-            from .librr import debug
+            from .librr import env
             if len(arg)==2:
                 env('True')
             elif len(arg)==3:
