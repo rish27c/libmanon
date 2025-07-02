@@ -143,7 +143,6 @@ def main():
     print('\n')
     #liber command handler
     cr=False
-    print(password)
     pkey=lib_auth_pkey_kk_login_varification(password=password)
     while True:
         scan=input('libcmd#>>')
