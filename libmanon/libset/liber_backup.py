@@ -26,6 +26,14 @@ def liberb(arg, data):
                 debug(arg[2])
             else:
                 print(f'\n\'{arg[1]}\' does not needs an arguement! (づ ᴗ _ᴗ)づ\n', flush=True)
+        elif arg[1]=='env':
+            from .librr import env
+            if len(arg)==2:
+                env('True')
+            elif len(arg)==3:
+                env(arg[2])
+            else:
+                print(f'\n\'{arg[1]}\' does not needs an arguement! (づ ᴗ _ᴗ)づ\n', flush=True)
         elif arg[1]=='check':
             print('\nlib_auth_pkey_kk_login_varification=True;\n\tWorking! :D\n', flush=True)
         elif arg[1]=='libql->inject':
