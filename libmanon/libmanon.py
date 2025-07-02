@@ -30,5 +30,5 @@ except Exception as e:
     print()
     print('Libman->Crashed')
     print()
-    import getpass
+    from libset import getpass
     getpass.getpass('Exit...')
