@@ -1,0 +1,1 @@
+VERSION='LibmanOn(ClI)'

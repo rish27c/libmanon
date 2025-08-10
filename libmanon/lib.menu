@@ -1,0 +1,266 @@
+#This is a script(uses user_interface compiler)
+
+#I will explain the syntaxes as this file is part of the project, as obvious, # is for commenting
+
+#Now, anything started from / will run one, everything else will be in loop
+
+#!DISPLAY is for echoing
+/!DISPLAY User-Interface Enviourment Activated
+/!DISPLAY  
+/!GET Press Enter to Continue...
+
+!DISPLAY  
+!DISPLAY Main Menu
+!DISPLAY  
+!DISPLAY 1. libman (Handles Database and Server Connection)
+!DISPLAY 2. liber (Handles the program's functions)
+!DISPLAY 3. libql (Handles the Database's data)
+!DISPLAY 4. core (Handles priviledge)
+!DISPLAY  
+!DISPLAY 0. to quit/exit
+!DISPLAY  
+
+#The below line asks for input
+!GET Options: 
+
+#Saves input
+!SAVE choice as &GET
+
+!IF load[choice] == 0:
+$STOP
+#!FI
+
+#This is conditional block, #!FI states the end of condtional block
+!IF load[choice] == 1:
+!DISPLAY 1. See Config Data
+!DISPLAY 2. Overwrite Database(with test data)
+!DISPLAY 3. Server Connection test
+
+!GET libman->options: 
+!SAVE libman_choice as &GET
+
+#This saves variable bool as chars(string), the other datatype are num(integers) and fnum(floats)
+!SAVE chars libman_bool as False
+#!FI
+
+!IF load[libman_choice] == 1:
+!SAVE chars libman_bool as True
+$PROMPT libman conf_sec_rev *
+#!FI
+
+!IF load[libman_choice] == 2:
+!SAVE chars libman_bool as True
+$PROMPT libman new-db-->on
+#!FI
+
+!IF load[libman_choice] == 3:
+!SAVE chars libman_bool as True
+$PROMPT libman test
+#!FI
+
+!IF load[libman_bool] != True:
+!DISPLAY Invalid libman choice
+#!FI
+
+!IF load[choice] == 2:
+!DISPLAY  
+!DISPLAY Warning: liber handles all basic functionalities of the program
+!DISPLAY Any option having '[Not Recommended!]' flags mean that it for CLI and UF may break(Changes may apply after restarting the program)
+!DISPLAY  
+!DISPLAY 1. Debug (Echoes error on screen [Not Recommended!!])
+!DISPLAY 2. Env (Switches to older version, for enforcing charset in mysql [Not Recommended!!])
+!DISPLAY 3. Admin Access (No UF support, has it's own syntax and interface [Not Recommended!])
+
+!GET liber->options: 
+!SAVE liber_choice as &GET
+!SAVE chars liber_bool as False
+#!FI
+
+!IF load[liber_choice] == 1:
+!SAVE chars liber_bool as True
+!DISPLAY  
+!DISPLAY 0. False
+!DISPLAY 1. True
+!GET debug choice: 
+!SAVE debug_choice as &GET
+$PROMPT liber debug load[debug_choice]
+#!FI
+
+!IF load[liber_choice] == 2:
+!SAVE chars liber_bool as True
+!DISPLAY  
+!DISPLAY 0. False (libman_backup)
+!DISPLAY 1. True (libman)
+!GET env choice: 
+!SAVE env_choice as &GET
+$PROMPT liber env load[env_choice]
+#!FI
+g
+!IF load[liber_choice] == 3:
+!SAVE chars liber_bool as True
+$PROMPT liber libql->inject
+#!FI
+
+!IF load[liber_bool] != True:
+!DISPLAY Invalid liber choice
+#!FI
+
+!IF load[choice] == 4:
+!DISPLAY  
+!DISPLAY 1. Show SqlData
+!DISPLAY 2. Elevate liber priviledge
+!DISPLAY 3. Elevate libql priviledge
+!DISPLAY 4. Elevate liber and libql (both) priviledge
+!GET core->options: 
+!SAVE core_choice as &GET
+!SAVE chars core_bool as False
+#!FI
+
+!IF load[core_choice] == 1:
+!SAVE chars core_bool as True
+$PROMPT core show sqldata
+#!FI
+
+!IF load[core_choice] == 2:
+!SAVE chars core_bool as True
+$PROMPT core liber
+#!FI
+
+!IF load[core_choice] == 3:
+!SAVE chars core_bool as True
+$PROMPT core libql
+#!FI
+
+!IF load[core_choice] == 4:
+!SAVE chars core_bool as True
+$PROMPT core *
+#!FI
+
+!IF load[core_bool] != True:
+!DISPLAY Invalid core choice
+#!FI
+
+!IF load[choice] == 3:
+?print('\n1. Reveal Data\n2. Issue Book\n3. Alignment Check\n4. Realign\n5. Add/Remove Book\n6. Add/Remove Student\n7. Search')
+!GET libql->options: 
+!SAVE libql_choice as &GET
+!SAVE chars libql_bool as False
+#!FI
+
+!IF load[libql_choice] == 1:
+!SAVE chars libql_bool as True
+$PROMPT libql reveal data
+#!FI
+
+!IF load[libql_choice] == 2:
+!SAVE chars libql_bool as True
+!GET Date(yyyy-mm-dd): 
+!SAVE date as &GET2
+!GET Student Id: 
+!SAVE student_id as &GET
+!GET Book Name: 
+!SAVE book_name as &GET
+$PROMPT libql issue load[date] load[student_id] load[book_name]
+#!FI
+
+!IF load[libql_choice] == 3:
+!SAVE chars libql_bool as True
+$PROMPT libql alignment check
+#!FI
+
+!IF load[libql_choice] == 4:
+!SAVE chars libql_bool as True
+$PROMPT libql alignment realign
+#!FI
+
+!IF load[libql_choice] == 5:
+!SAVE chars libql_bool as True
+!SAVE chars arb as False
+!DISPLAY  
+!DISPLAY 1. Add
+!DISPLAY 2. Remove
+!GET book->Choice: 
+!SAVE book_choice as &GET
+#!FI
+
+!IF load[book_choice] == 1:
+!SAVE chars arb as True
+!GET Shelf: 
+!SAVE shelf as &GET
+!GET Book Name: 
+!SAVE bn as &GET
+$PROMPT libql add book load[shelf] load[bn]
+#!FI
+
+!IF load[book_choice] == 2:
+!SAVE chars arb as True
+!GET Book Name: 
+!SAVE rbn as &GET
+$PROMPT libql -tr book load[rbn]
+#!FI
+
+!IF load[arb] != True:
+!DISPLAY Invalid Book Choice
+#!FI
+
+!IF load[libql_choice] == 6:
+!SAVE chars libql_bool as True
+!SAVE chars ars as False
+!DISPLAY  
+!DISPLAY 1. Add
+!DISPLAY 2. Remove
+!GET student->Choice: 
+!SAVE st_choice as &GET
+#!FI
+
+!IF load[st_choice] == 1:
+!SAVE chars ars as True
+!GET Student Id: 
+!SAVE st_id as &GET
+!GET Student Name: 
+!SAVE st_name as &GET
+$PROMPT libql add student load[st_id] load[st_name]
+#!FI
+
+!IF load[st_choice] == 2:
+!SAVE chars ars as True
+!GET Student Id:
+!SAVE rstid as &GET
+$PROMPT libql -tr student load[rstid]
+#!FI
+
+!IF load[ars] != True:
+!DISPLAY Invaid Student Choice
+#!FI
+
+!IF load[libql_choice] == 7:
+!SAVE chars libql_bool as True
+!DISPLAY  
+!DISPLAY 1. Student by Name
+!DISPLAY 2. Student by Book
+!GET Search: 
+!SAVE srch as &GET
+!SAVE chars sb as False
+#!FI
+
+!IF load[srch] == 1:
+!SAVE chars sb as True
+!GET Name: 
+!SAVE nn as &GET3
+$PROMPT libql search student (by name) load[nn]
+#!FI
+
+!IF load[srch] == 2:
+!SAVE chars sb as True
+!GET Book(* for all): 
+!SAVE bnn as &GET
+$PROMPT libql search student (book) load[bnn]
+#!FI
+
+!IF load[sb] != True:
+!DISPLAY Invalid Search Choice
+#!FI
+
+!IF load[libql_bool] != True:
+!DISPLAY Invalid libql Choice
+#!FI
